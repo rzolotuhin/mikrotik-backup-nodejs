@@ -1,0 +1,23 @@
+version: '3.1'
+networks:
+  network-mikrotik:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+services:
+  mikrotik-backup-nodejs:
+    container_name: mikrotik-backup-nodejs
+    image: rzolotuhin/mikrotik-backup-nodejs:latest
+    restart: always
+    networks:
+      - network-mikrotik
+    volumes:
+      - /srv/mikrotik/config:/opt/nodejs/mikrotik/config:ro
+      - /srv/mikrotik/backup:/opt/nodejs/mikrotik/backup
+      - /srv/mikrotik/keys:/opt/nodejs/mikrotik/keys:ro
+      - /srv/mikrotik/backup.ini:/opt/nodejs/mikrotik/backup.ini:ro
+      # timezone
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
